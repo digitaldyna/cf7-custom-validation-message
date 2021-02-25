@@ -65,12 +65,19 @@ class CF7_CVM_Admin {
 		wp_nonce_field( 'wpcf7_custom_validation_security', 'wpcf7_custom_validation_nonce' );
 		?>
 		<h2><?php _e( 'Custom Validation', 'cf7-custom-validation-message' ); ?></h2>
+		<p><?php _e( '<b>Note:</b>', 'cf7-custom-validation-message' ); ?>
+		<?php _e( 'You need to save form to reflect new tag(s).', 'cf7-custom-validation-message' ); ?></p>
 		
 		<fieldset>
-			<?php 
-			$form_ID     = $post->id; # change the 1538 to your CF7 form ID
-			$ContactForm = WPCF7_ContactForm::get_instance( $form_ID );
-			$form_fields = $ContactForm->scan_form_tags();
+			<?php
+			$form_fields = array();
+			$form_ID     = $post->id; # get CF7 form ID
+			if( $form_ID != null){
+				$ContactForm = WPCF7_ContactForm::get_instance( $form_ID );
+				$form_fields = $ContactForm->scan_form_tags();
+			}else{
+				$form_fields = $post->scan_form_tags();
+			}
 			$arr_values = get_post_meta( $form_ID, '_wpcf7_cv_validation_messages', true );
 			// Good idea to make sure things are set before using them
 			$arr_values = isset( $arr_values ) ? (array) $arr_values : array();

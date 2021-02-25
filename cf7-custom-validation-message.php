@@ -13,11 +13,11 @@
  * @package           CF7_CVM
  *
  * @wordpress-plugin
- * Plugin Name:       CF7 Custom Validation Message
- * Plugin URI:        http://digitaldyna.com
+ * Plugin Name:       Custom Validation Message for CF7
  * Description:       Plugin provides custom validation message for each field of contact form 7.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            DigitalDyna
+ * Author URI:        http://digitaldyna.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       cf7-custom-validation-message
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'CF7_CVM_VERSION', '1.0.0' );
+define( 'CF7_CVM_VERSION', '1.0.1' );
 define( 'CF7_CVM_BASE_URL', plugin_basename( __FILE__ ) );
 
 /**

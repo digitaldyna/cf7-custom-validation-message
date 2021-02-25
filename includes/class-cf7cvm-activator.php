@@ -33,8 +33,10 @@ class CF7_CVM_Activator {
 		if ( !in_array( 'contact-form-7/wp-contact-form-7.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			deactivate_plugins( CF7_CVM_BASE_URL );
-			wp_die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ), 'Plugin dependency check', array( 'back_link' => true ) );
+			//wp_die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ), 'Plugin dependency check', array( 'back_link' => true ) );
+		 	die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ) );
 		}
+
 	}
 
 }
