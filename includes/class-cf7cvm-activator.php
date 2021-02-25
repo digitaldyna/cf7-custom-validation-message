@@ -29,14 +29,22 @@ class CF7_CVM_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-		if ( !in_array( 'contact-form-7/wp-contact-form-7.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-			deactivate_plugins( CF7_CVM_BASE_URL );
-			//wp_die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ), 'Plugin dependency check', array( 'back_link' => true ) );
-		 	die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ) );
+	public static function activate($network_wide) {
+		if ( is_multisite() && $network_wide ) {
+			if ( !is_plugin_active_for_network('contact-form-7/wp-contact-form-7.php') ){
+				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				deactivate_plugins( CF7_CVM_BASE_URL );
+				//wp_die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ), 'Plugin dependency check', array( 'back_link' => true ) );
+				die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ) );
+			}
+		} else {
+			if ( !is_plugin_active('contact-form-7/wp-contact-form-7.php') ){
+				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				deactivate_plugins( CF7_CVM_BASE_URL );
+				//wp_die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ), 'Plugin dependency check', array( 'back_link' => true ) );
+				die( __( 'Please install and Activate Contact Form 7.', 'cf7-custom-validation-message' ) );
+			}
 		}
-
 	}
 
 }

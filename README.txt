@@ -1,10 +1,10 @@
-=== Custom Validation Message for CF7 ===
+=== Custom Validation Message for Contact Form 7 ===
 Contributors: mohan9a
 Donate link: http://digitaldyna.com
-Tags: cf7 validation message, contact form 7, cf7 custom validation message, contact form 7 validation message, custom validation message for cf7
+Tags: contact form 7 validation, custom validation message for contact form 7, contact form 7 validation message, contact form 7, cf7 custom validation message, custom validation message for cf7
 Requires at least: 3.0.1
-Tested up to: 5.5
-Stable tag: 1.0.1
+Tested up to: 5.6.2
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,10 @@ You can recognize field by field name. Suppose your field name is your-name then
 2. When user submit form, custom validation message will be displayed below is field.
 
 == Changelog ==
+
+= 1.1 =
+* Compatiblity check with WordPress 5.6.2 version.
+* Added multisite support. Plugin will work with Network enable site.
 
 = 1.0.1 =
 * Showing default tags if contact form not saved.
