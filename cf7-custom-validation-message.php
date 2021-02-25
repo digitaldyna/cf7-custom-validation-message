@@ -18,7 +18,6 @@
  * Description:       Plugin provides custom validation message for each field of contact form 7.
  * Version:           1.0.0
  * Author:            DigitalDyna
- * Author URI:        http://digitaldyna.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       cf7-custom-validation-message

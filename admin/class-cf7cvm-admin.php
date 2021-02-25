@@ -13,8 +13,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
+ * Defines the plugin name, version
  *
  * @package    CF7_CVM
  * @subpackage CF7_CVM/admin
@@ -73,12 +72,17 @@ class CF7_CVM_Admin {
 			$ContactForm = WPCF7_ContactForm::get_instance( $form_ID );
 			$form_fields = $ContactForm->scan_form_tags();
 			$arr_values = get_post_meta( $form_ID, '_wpcf7_cv_validation_messages', true );
-			$is_active = isset($arr_values['activate']) && $arr_values['activate'] == 1 ? 1 : 0;
+			// Good idea to make sure things are set before using them
+			$arr_values = isset( $arr_values ) ? (array) $arr_values : array();
+			// Any of the WordPress data sanitization functions can be used here
+			//$arr_values = array_map( 'esc_attr', $arr_values );
+			$arr_values = $this->recursive_sanitize_text_field( $arr_values );
+			$is_active = isset($arr_values['activate']) && $arr_values['activate'] === "1" ? 1 : 0;
 			?>
 			<table class="form-table"><tbody>
 				<tr>
 					<th scope="row"><?php _e( 'Activate', 'cf7-custom-validation-message' ); ?></th>
-					<td><input type="checkbox" <?php echo isset($is_active) && $is_active == 1 ? 'checked' : ''; ?> name="wpcf7-cv[activate]"></td>
+					<td><input type="checkbox" <?php echo isset($is_active) && $is_active === 1 ? 'checked' : ''; ?> name="wpcf7-cv[activate]"></td>
 				</tr>
 				<tr>
 					<th scope="row"><?php _e( 'Your field', 'cf7-custom-validation-message' ); ?></th>
@@ -87,7 +91,7 @@ class CF7_CVM_Admin {
 				<?php
 				foreach ($form_fields as $field) {
 					if($field->type === 'submit' || $field->type === 'acceptance'){ continue; }
-					$custom_message = isset($arr_values[$field->name]) ? $arr_values[$field->name] : '';
+					$custom_message = isset($arr_values[$field->name]) ? sanitize_text_field($arr_values[$field->name]) : '';
 					?>
 					<tr>
 						<th scope="row">
@@ -100,7 +104,7 @@ class CF7_CVM_Admin {
 					<?php
 					//confirmation email
 					if($field->type === 'email*'){
-						$custom_message_confirm = isset($arr_values[$field->name.'_invalid']) ? $arr_values[$field->name.'_invalid'] : '';
+						$custom_message_confirm = isset($arr_values[$field->name.'_invalid']) ? sanitize_text_field($arr_values[$field->name.'_invalid']) : '';
 					?>
 					<tr>
 						<th scope="row">
@@ -147,49 +151,23 @@ class CF7_CVM_Admin {
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
+	 * Recursive sanitation for an array
+	 * 
+	 * @param $array
 	 *
-	 * @since    1.0.0
+	 * @return mixed
 	 */
-	public function enqueue_styles() {
+	function recursive_sanitize_text_field($array) {
+		foreach ( $array as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				$value = $this->recursive_sanitize_text_field($value);
+			}
+			else {
+				$value = sanitize_text_field( $value );
+			}
+		}
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cf7cvm-admin.css', array(), $this->version, 'all' );
-
-	}
-
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cf7cvm-admin.js', array( 'jquery' ), $this->version, false );
-
+		return $array;
 	}
 
 }

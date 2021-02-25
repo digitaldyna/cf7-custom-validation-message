@@ -164,9 +164,6 @@ class CF7_CVM {
 
 		$plugin_admin = new CF7_CVM_Admin( $this->get_plugin_name(), $this->get_version() );
 		
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
 		$this->loader->add_action( 'wpcf7_editor_panels', $plugin_admin, 'cf7cvm_add_panel' );
 		$this->loader->add_action( 'wpcf7_after_save', $plugin_admin, 'cf7cvm_store_messages' );
 	}
@@ -181,9 +178,6 @@ class CF7_CVM {
 	private function define_public_hooks() {
 
 		$plugin_public = new CF7_CVM_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'wpcf7_validate_text*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
 		$this->loader->add_action( 'wpcf7_validate_email*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
