@@ -1,7 +1,7 @@
 === Custom Validation Message for Contact Form 7 ===
 Contributors: mohan9a
 Donate link: http://digitaldyna.com
-Tags: contact form 7 validation, custom validation message for contact form 7, contact form 7 validation message, contact form 7, cf7 custom validation message, custom validation message for cf7
+Tags: cf7 custom validation message, contact form 7, contact form 7 validation, cf7 validation, Contact form 7 validation, custom validation, form validation, validation, custom validation message for cf7
 Requires at least: 3.0.1
 Tested up to: 5.6.2
 Stable tag: 1.1
