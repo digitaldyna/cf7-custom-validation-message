@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Custom Validation Message for Contact Form 7
  * Description:       Plugin provides custom validation message for each field of contact form 7.
- * Version:           1.1
+ * Version:           1.2
  * Author:            DigitalDyna
  * Author URI:        http://digitaldyna.com
  * License:           GPL-2.0+
