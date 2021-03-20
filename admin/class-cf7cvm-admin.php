@@ -55,7 +55,7 @@ class CF7_CVM_Admin {
 
 	function cf7cvm_add_panel( $panels ) {
 		$panels['custom-validation'] = array(
-			'title'    => __( 'Custom Validation', 'cf7-custom-validation-message' ),
+			'title'    => __( 'Custom Validation Messages', 'cf7-custom-validation-message' ),
 			'callback' => array( $this, 'cf7cvm_panel_callback_fn' ),
 		);
 		return $panels;
@@ -115,7 +115,7 @@ class CF7_CVM_Admin {
 					?>
 					<tr>
 						<th scope="row">
-							<label for="field-<?php echo $field->name.'_invalid'; ?>"><?php echo $field->name.'(Wrong Email)'; ?></label>
+							<label for="field-<?php echo $field->name.'_invalid'; ?>"><?php echo $field->name.' (Wrong Email)'; ?></label>
 						</th>
 						<td>
 							<input type="text" id="field-<?php echo $field->name.'_invalid'; ?>" name="wpcf7-cv[<?php echo $field->name.'_invalid'; ?>]" class="regular-text" size="70" value="<?php echo $custom_message_confirm; ?>">
@@ -123,6 +123,40 @@ class CF7_CVM_Admin {
 					</tr>
 					<?php
 					}
+					//confirmation email end
+
+					//textarea min length
+					if( ($field->type === 'text*' || $field->type === 'textarea*') && $this->array_contain_string('minlength:',$field->options) == true){
+						$custom_message_confirm = isset($arr_values[$field->name.'_minlength']) ? sanitize_text_field($arr_values[$field->name.'_minlength']) : '';
+					?>
+					<tr>
+						<th scope="row">
+							<label for="field-<?php echo $field->name.'_minlength'; ?>"><?php echo $field->name.' (Min Length)'; ?></label>
+						</th>
+						<td>
+							<input type="text" id="field-<?php echo $field->name.'_minlength'; ?>" name="wpcf7-cv[<?php echo $field->name.'_minlength'; ?>]" class="regular-text" size="70" value="<?php echo $custom_message_confirm; ?>">
+						</td>
+					</tr>
+					<?php
+					}
+					//textarea min length end
+
+					//textarea max length
+					if( ($field->type === 'text*' || $field->type === 'textarea*') && $this->array_contain_string('maxlength:',$field->options) == true){
+						$custom_message_confirm = isset($arr_values[$field->name.'_maxlength']) ? sanitize_text_field($arr_values[$field->name.'_maxlength']) : '';
+					?>
+					<tr>
+						<th scope="row">
+							<label for="field-<?php echo $field->name.'_maxlength'; ?>"><?php echo $field->name.' (Max Length)'; ?></label>
+						</th>
+						<td>
+							<input type="text" id="field-<?php echo $field->name.'_maxlength'; ?>" name="wpcf7-cv[<?php echo $field->name.'_maxlength'; ?>]" class="regular-text" size="70" value="<?php echo $custom_message_confirm; ?>">
+						</td>
+					</tr>
+					<?php
+					}
+					//textarea max length end
+
 				}
 			echo '</tbody></table>'; 
 		?>
@@ -175,6 +209,16 @@ class CF7_CVM_Admin {
 		}
 
 		return $array;
+	}
+	
+	function array_contain_string($str, array $arr)
+	{
+		foreach($arr as $a) {
+			if (strpos($a,$str) !== false) {
+				return true;
+ 			}
+			//return false;
+		}
 	}
 
 }

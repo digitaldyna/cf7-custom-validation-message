@@ -3,18 +3,18 @@ Contributors: mohan9a
 Donate link: http://digitaldyna.com
 Tags: cf7 custom validation message, contact form 7, contact form 7 validation, cf7 validation, Contact form 7 validation, custom validation, form validation, validation, custom validation message for cf7
 Requires at least: 3.0.1
-Tested up to: 5.6.2
-Stable tag: 1.1
+Tested up to: 5.7
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Set your own custom validation message for each field for contact form 7. You will get new tab at each form for setting validation messages.
+Set your own custom validation message for each field in particualr contact form 7. You will get new tab at each form for setting up the custom validation messages for each required field.
 
 == Description ==
 
-Contact form 7 is widely used plugin now-a-days but it doesn't allow to set specifict validation message for each field. Not everyone is so technical that can code to set specifict message and create script for it.So this plugin can help to set specific message for each validation.
+Contact form 7 is widely used plugin now-a-days but it doesn't allow to set specific validation message for each field. Not everyone is so technical that can code to set specific message.This plugin can help to set specific custom validation message for each field.
 
-After activating plugin, a new tab will be displayed with the fields which are selected by admin and can set validation message to show for each tag.
+After activating plugin, a new tab will be displayed with the title "Custom Validation Messages" for each form where all the fields will be displayed. Admin can set here own validation message for each required field.
 
 Some of basic feature using this plugin:
 
@@ -23,6 +23,18 @@ Some of basic feature using this plugin:
 *   No required any technical knowledge for it.
 *   Plugin doens't create any extra table so it will not load on database.
 *   Created using WordPress coding standard.
+
+Plugin supports below fields:
+
+*   text (with min and max validation)
+*   email (with confirm email)
+*   URL
+*   tel
+*   date
+*   textarea (with min and max validation)
+*   drop-down menu
+*   checkboxes
+*   radio buttons
 
 == Installation ==
 <strong>To install "Custom Validation Message for CF7" using the built-in plugin installer: </strong>
@@ -66,6 +78,10 @@ You can recognize field by field name. Suppose your field name is your-name then
 2. When user submit form, custom validation message will be displayed below is field.
 
 == Changelog ==
+
+= 1.2 =
+* Compatiblity check with WordPress 5.7 version.
+* Added minimum and maximum length custom validation message support for text and textarea fields.
 
 = 1.1 =
 * Compatiblity check with WordPress 5.6.2 version.

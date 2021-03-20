@@ -76,6 +76,8 @@ class CF7_CVM_Public {
 		if($type == 'email*' && sanitize_text_field($_POST[$name]) == ''  && $is_required){   
 			$result->invalidate( $name, $validatation_msg );		
 		}
+
+		//for email confirmation
 		if($type == 'email*' && sanitize_text_field($_POST[$name]) != ''  && $is_required) {
 			if(substr(sanitize_text_field($_POST[$name]), 0, 1) == '.' || !preg_match('/^([*+!.&#$¦\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,4})$/i', sanitize_text_field($_POST[$name]))) {  
 				$confirm_field = $name.'_invalid';
@@ -88,6 +90,34 @@ class CF7_CVM_Public {
 			$result->invalidate( $name, $validatation_msg );
 		}
 		
+		//for minlength and maxlength
+		$value = isset( $_POST[$name] ) ? (string) $_POST[$name] : '';
+		if ( '' !== $value ) {
+			$maxlength = $tag->get_maxlength_option();
+			$minlength = $tag->get_minlength_option();
+
+			if ( $maxlength and $minlength
+			and $maxlength < $minlength ) {
+				$maxlength = $minlength = null;
+			}
+
+			$code_units = wpcf7_count_code_units( stripslashes( $value ) );
+
+			if ( false !== $code_units ) {
+				if ( $maxlength and $maxlength < $code_units ) {
+					$textarea_maxlength = $name.'_maxlength';
+					$validatation_msg = isset($arr_values[$textarea_maxlength]) ? esc_attr(sanitize_text_field($arr_values[$textarea_maxlength])) : wpcf7_get_message( $name );
+					$result->invalidate( $name, $validatation_msg );
+				} elseif ( $minlength and $code_units < $minlength ) {
+					$textarea_minlength = $name.'_minlength';
+					$validatation_msg = isset($arr_values[$textarea_minlength]) ? esc_attr(sanitize_text_field($arr_values[$textarea_minlength])) : wpcf7_get_message( $name );
+					$result->invalidate( $name, $validatation_msg );
+				}
+			}
+		}
+			
+
+
 		if($type == 'tel*' && sanitize_text_field($_POST[$name]) == '' && $is_required){   
 			$result->invalidate( $name, $validatation_msg );
 		}
