@@ -165,6 +165,10 @@ class CF7_CVM_Admin {
 		<?php
 	}
 	
+	/**
+	 * storing the custom validation messages in database from backend
+	 * @param $contact_form id
+	 */
 	function cf7cvm_store_messages( $contact_form ) {
 		if ( ! isset( $_POST ) || empty( $_POST ) ) {
 			return;
@@ -193,9 +197,7 @@ class CF7_CVM_Admin {
 
 	/**
 	 * Recursive sanitation for an array
-	 * 
 	 * @param $array
-	 *
 	 * @return mixed
 	 */
 	function recursive_sanitize_text_field($array) {

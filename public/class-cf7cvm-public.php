@@ -60,13 +60,16 @@ class CF7_CVM_Public {
 
 		$is_required = $tag->is_required() || 'radio' == $tag->type || 'quiz' == $tag->type;
 		
+		$allowed_tags = array('text*','email*','textarea*','tel*','url*','checkbox*','number*','date*','select*','radio','file','quiz');
+		$minmax_supported_tags = array('text*','email*','textarea*','tel*','quiz','captchar');
+
 		$cf7_form_id = (int)sanitize_text_field($_POST['_wpcf7']);
 		$arr_values = get_post_meta( $cf7_form_id, '_wpcf7_cv_validation_messages', true );
 		$validatation_msg = isset($arr_values[$name]) ? esc_attr(sanitize_text_field($arr_values[$name])) : wpcf7_get_message( $name );
 		
 		//check if activation
 		$is_active = isset($arr_values['activate']) && $arr_values['activate'] === 1 ? 1 : 0;
-		if( $is_active === 0 ){
+		if( $is_active === 0 || $is_required == false || !in_array($type,$allowed_tags)){
 			return $result;
 		}
 		if($type == 'text*' && sanitize_text_field($_POST[$name]) == '' && $is_required){
@@ -92,7 +95,7 @@ class CF7_CVM_Public {
 		
 		//for minlength and maxlength
 		$value = isset( $_POST[$name] ) ? (string) $_POST[$name] : '';
-		if ( '' !== $value ) {
+		if ( '' !== $value && in_array($type,$minmax_supported_tags) ) {
 			$maxlength = $tag->get_maxlength_option();
 			$minlength = $tag->get_minlength_option();
 
@@ -115,8 +118,6 @@ class CF7_CVM_Public {
 				}
 			}
 		}
-			
-
 
 		if($type == 'tel*' && sanitize_text_field($_POST[$name]) == '' && $is_required){   
 			$result->invalidate( $name, $validatation_msg );
@@ -125,8 +126,12 @@ class CF7_CVM_Public {
 		if($type == 'url*' && sanitize_text_field($_POST[$name]) == '' && $is_required){   
 			$result->invalidate( $name, $validatation_msg );
 		}
-
-		if($type == 'checkbox*' && sanitize_text_field($_POST[$name]) == '' && $is_required){   
+		
+		$checkbox_vals = array();
+		if( $type == 'checkbox*' && isset($_POST[$name]) ){
+			$checkbox_vals = $this->recursive_sanitize_text_field($_POST[$name]);
+		}		
+		if($type == 'checkbox*' && $is_required && empty($checkbox_vals) ){
 			$result->invalidate( $name, $validatation_msg );
 		}
 
@@ -155,6 +160,25 @@ class CF7_CVM_Public {
 		}
 		
 		return $result;
+	}
+
+	/**
+	 * Recursive sanitation for an array
+	 * @since    1.2.1
+	 * @param $array
+	 * @return mixed
+	 */
+	function recursive_sanitize_text_field($array) {
+		foreach ( $array as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				$value = $this->recursive_sanitize_text_field($value);
+			}
+			else {
+				$value = sanitize_text_field( $value );
+			}
+		}
+
+		return $array;
 	}
 
 

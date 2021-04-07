@@ -4,7 +4,7 @@ Donate link: http://digitaldyna.com
 Tags: cf7 custom validation message, contact form 7, contact form 7 validation, cf7 validation, Contact form 7 validation, custom validation, form validation, validation, custom validation message for cf7
 Requires at least: 3.0.1
 Tested up to: 5.7
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,10 @@ Set your own custom validation message for each field in particualr contact form
 Contact form 7 is widely used plugin now-a-days but it doesn't allow to set specific validation message for each field. Not everyone is so technical that can code to set specific message.This plugin can help to set specific custom validation message for each field.
 
 After activating plugin, a new tab will be displayed with the title "Custom Validation Messages" for each form where all the fields will be displayed. Admin can set here own validation message for each required field.
+
+== Demo Link ==
+
+* [Try a demo](https://www.digitaldyna.com/custom-validation-message-for-contact-form-7/ "Demo link")
 
 Some of basic feature using this plugin:
 
@@ -78,6 +82,10 @@ You can recognize field by field name. Suppose your field name is your-name then
 2. When user submit form, custom validation message will be displayed below is field.
 
 == Changelog ==
+
+= 1.2.1 =
+* Bug fixing for checkbox and radio buttions.
+* Some logical improvements.
 
 = 1.2 =
 * Compatiblity check with WordPress 5.7 version.
