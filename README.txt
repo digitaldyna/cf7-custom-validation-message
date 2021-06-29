@@ -83,6 +83,9 @@ You can recognize field by field name. Suppose your field name is your-name then
 
 == Changelog ==
 
+= 1.2.2 =
+* Bug fix: Email validation checked by Inbuilt PHP function.
+
 = 1.2.1 =
 * Bug fixing for checkbox and radio buttions.
 * Some logical improvements.

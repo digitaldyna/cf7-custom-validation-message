@@ -82,7 +82,7 @@ class CF7_CVM_Public {
 
 		//for email confirmation
 		if($type == 'email*' && sanitize_text_field($_POST[$name]) != ''  && $is_required) {
-			if(substr(sanitize_text_field($_POST[$name]), 0, 1) == '.' || !preg_match('/^([*+!.&#$¦\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,4})$/i', sanitize_text_field($_POST[$name]))) {  
+			if(substr(sanitize_text_field($_POST[$name]), 0, 1) == '.' || !filter_var(sanitize_text_field($_POST[$name], FILTER_VALIDATE_EMAIL)) ) {  
 				$confirm_field = $name.'_invalid';
 				$validatation_msg = isset($arr_values[$confirm_field]) ? esc_attr(sanitize_text_field($arr_values[$confirm_field])) : wpcf7_get_message( $name );
 				$result->invalidate( $name, $validatation_msg );
