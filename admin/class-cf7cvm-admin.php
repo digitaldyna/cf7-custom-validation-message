@@ -102,7 +102,13 @@ class CF7_CVM_Admin {
 					?>
 					<tr>
 						<th scope="row">
-							<label for="field-<?php echo $field->name; ?>"><?php echo $field->name; ?></label>
+							<?php //override field name for file upload
+							$fieldname = $field->name;
+							if( $field->type == 'file*' ){
+								$fieldname = $field->name . ' ' . __( '(Required)', 'cf7-custom-validation-message' );
+							}
+							?>
+							<label for="field-<?php echo $field->name; ?>"><?php echo $fieldname; ?></label>
 						</th>
 						<td>
 							<input type="text" id="field-<?php echo $field->name; ?>" name="wpcf7-cv[<?php echo $field->name; ?>]" class="regular-text" size="70" value="<?php echo $custom_message; ?>">
@@ -156,6 +162,41 @@ class CF7_CVM_Admin {
 					<?php
 					}
 					//textarea max length end
+
+					//file field options start
+					if( $field->type === 'file*' && isset($field->options) && !empty($field->options) ){
+						//get limit from tag
+						$limit = $field->get_option( 'limit' );
+						//get custom message if already set
+						$custom_message_limit = isset($arr_values[$field->name.'_limit']) ? sanitize_text_field($arr_values[$field->name.'_limit']) : '';
+						if( isset($limit) ){ ?>
+						<tr>
+							<th scope="row">
+								<label for="field-<?php echo $field->name.'_limit'; ?>"><?php echo $field->name.' (Limit)'; ?></label>
+							</th>
+							<td>
+								<input type="text" id="field-<?php echo $field->name.'_limit'; ?>" name="wpcf7-cv[<?php echo $field->name.'_limit'; ?>]" class="regular-text" size="70" value="<?php echo $custom_message_limit; ?>">
+							</td>
+						</tr>	
+						<?php }
+						//get file types allowed in tag
+						$file_types_a = $field->get_option( 'filetypes' );
+						//get custom message if already set
+						$custom_message_filetype = isset($arr_values[$field->name.'_filetype']) ? sanitize_text_field($arr_values[$field->name.'_filetype']) : '';						
+						if( isset($file_types_a) && !empty($file_types_a) ){ ?>
+						<tr>
+							<th scope="row">
+								<label for="field-<?php echo $field->name.'_filetype'; ?>"><?php echo $field->name.' (File types)'; ?></label>
+							</th>
+							<td>
+								<input type="text" id="field-<?php echo $field->name.'_filetype'; ?>" name="wpcf7-cv[<?php echo $field->name.'_filetype'; ?>]" class="regular-text" size="70" value="<?php echo $custom_message_filetype; ?>">
+							</td>
+						</tr>
+						<?php }
+					?>
+					<?php
+					}
+					//file field options end
 
 				}
 			echo '</tbody></table>'; 

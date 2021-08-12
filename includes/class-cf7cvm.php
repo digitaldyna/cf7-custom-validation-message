@@ -79,7 +79,7 @@ class CF7_CVM {
 		if ( defined( 'CF7CVM_VERSION' ) ) {
 			$this->version = CF7_CVM_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.3.1';
 		}
 		$this->cf7_validation_priority = 9;
 		$this->plugin_name = 'cf7cvm';
@@ -190,7 +190,7 @@ class CF7_CVM {
 		$this->loader->add_action( 'wpcf7_validate_date*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
 		$this->loader->add_action( 'wpcf7_validate_select*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
 		$this->loader->add_action( 'wpcf7_validate_radio', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_file*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+		$this->loader->add_action( 'wpcf7_validate_file*', $plugin_public, 'cf7cv_custom_form_validation_file', $this->get_cf7_validation_priority(), 3 );
 		//$this->loader->add_action( 'wpcf7_validate_acceptance*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
 		$this->loader->add_action( 'wpcf7_validate_quiz', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
 

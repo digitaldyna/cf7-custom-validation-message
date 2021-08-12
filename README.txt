@@ -4,7 +4,7 @@ Donate link: http://digitaldyna.com
 Tags: cf7 custom validation message, contact form 7, contact form 7 validation, cf7 validation, Contact form 7 validation, custom validation, form validation, validation, custom validation message for cf7
 Requires at least: 3.0.1
 Tested up to: 5.7
-Stable tag: 1.2.2
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,10 @@ You can recognize field by field name. Suppose your field name is your-name then
 2. When user submit form, custom validation message will be displayed below is field.
 
 == Changelog ==
+
+= 1.3.1 =
+* Added custom validation message support for file upload field.
+* Compatiblity check with WordPress 5.8.
 
 = 1.2.2 =
 * Bug fix: Email validation checked by Inbuilt PHP function.

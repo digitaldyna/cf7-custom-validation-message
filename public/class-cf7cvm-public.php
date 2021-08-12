@@ -161,6 +161,112 @@ class CF7_CVM_Public {
 		
 		return $result;
 	}
+	
+	/**
+	 * Validate the file field.
+	 *
+	 * Used different function as file field has 3 argument
+	 *
+	 * @since    1.3.1
+	 * @access   public
+	 */
+	public function cf7cv_custom_form_validation_file( $result, $tag, $args ) {
+		$type = $tag['type'];
+		$name = $tag['name'];
+
+		$is_required = $tag->is_required();
+		$allowed_tags = array('file*');
+
+		$cf7_form_id = (int)sanitize_text_field($_POST['_wpcf7']);
+		$arr_values = get_post_meta( $cf7_form_id, '_wpcf7_cv_validation_messages', true );
+		$validatation_msg = isset($arr_values[$name]) ? esc_attr(sanitize_text_field($arr_values[$name])) : wpcf7_get_message( $name );
+		
+		//check if activation
+		$is_active = isset($arr_values['activate']) && $arr_values['activate'] === 1 ? 1 : 0;
+		if( $is_active === 0 || $is_required == false || !in_array($type,$allowed_tags)){
+			return $result;
+		}
+		
+		//get file
+		$file = isset( $_FILES[$name] ) ? $_FILES[$name] : null;
+		
+		/* File required validation */
+		if( $type == 'file*' && empty( $file['name'] ) && $is_required ){   
+			$result->invalidate( $name, $validatation_msg );
+			return $result;
+		}
+
+		/* File type validation */
+		$allowed_file_types = array();
+
+		if ( $file_types_a = $tag->get_option( 'filetypes' ) ) {
+			foreach ( $file_types_a as $file_types ) {
+				$file_types = explode( '|', $file_types );
+
+				foreach ( $file_types as $file_type ) {
+					$file_type = trim( $file_type, '.' );
+					$file_type = str_replace( array( '.', '+', '*', '?' ),
+						array( '\.', '\+', '\*', '\?' ), $file_type );
+					$allowed_file_types[] = $file_type;
+				}
+			}
+		}
+
+		$allowed_file_types = array_unique( $allowed_file_types );
+		$file_type_pattern = implode( '|', $allowed_file_types );
+		
+		//default file type if not provided then
+		if ( '' == $file_type_pattern ){
+			$file_type_pattern = 'jpg|jpeg|png|gif|pdf|doc|docx|ppt|pptx|odt|avi|ogg|m4a|mov|mp3|mp4|mpg|wav|wmv';
+			$custom_message_filetype = '';
+		}
+		
+		//convert to regex
+		$file_type_pattern = trim( $file_type_pattern, '|' );
+		$file_type_pattern = '(' . $file_type_pattern . ')';
+		$file_type_pattern = '/\.' . $file_type_pattern . '$/i';
+		
+		//check filetype with validation with regex
+		if ( ! preg_match( $file_type_pattern, $file['name'] ) ) {
+			$file_type = $name.'_filetype';
+			$validatation_msg = isset($arr_values[$file_type]) ? esc_attr(sanitize_text_field($arr_values[$file_type])) : wpcf7_get_message( $name );
+			$result->invalidate( $tag, $validatation_msg );
+			return $result;
+		}
+		
+		/* File size validation */
+		$allowed_size = 1048576; // default size 1 MB
+
+		if ( $file_size_a = $tag->get_option( 'limit' ) ) {
+			$limit_pattern = '/^([1-9][0-9]*)([kKmM]?[bB])?$/';
+
+			foreach ( $file_size_a as $file_size ) {
+				if ( preg_match( $limit_pattern, $file_size, $matches ) ) {
+					$allowed_size = (int) $matches[1];
+
+					if ( ! empty( $matches[2] ) ) {
+						$kbmb = strtolower( $matches[2] );
+
+						if ( 'kb' == $kbmb )
+							$allowed_size *= 1024;
+						elseif ( 'mb' == $kbmb )
+							$allowed_size *= 1024 * 1024;
+					}
+
+					break;
+				}
+			}
+		}
+		if ( $file['size'] > $allowed_size ) {
+			$size = size_format($allowed_size);
+			$file_limit = $name.'_limit';
+			$validatation_msg = isset($arr_values[$file_limit]) ? esc_attr(sanitize_text_field($arr_values[$file_limit])) : wpcf7_get_message( $name );
+			$result->invalidate( $tag, $validatation_msg );
+			return $result;
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Recursive sanitation for an array
