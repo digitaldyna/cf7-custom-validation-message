@@ -71,7 +71,7 @@ class CF7_CVM_Admin {
 		<fieldset>
 			<?php
 			$form_fields = array();
-			$form_ID     = $post->id; # get CF7 form ID
+			$form_ID     = $post->id(); # get CF7 form ID
 			if( $form_ID != null){
 				$ContactForm = WPCF7_ContactForm::get_instance( $form_ID );
 				$form_fields = $ContactForm->scan_form_tags();

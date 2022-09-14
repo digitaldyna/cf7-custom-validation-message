@@ -179,20 +179,53 @@ class CF7_CVM {
 
 		$plugin_public = new CF7_CVM_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wpcf7_validate_text*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_email*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_textarea*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_tel*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_url*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_checkbox*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_number*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		//$this->loader->add_action( 'wpcf7_validate_range*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_date*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_select*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_radio', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_file*', $plugin_public, 'cf7cv_custom_form_validation_file', $this->get_cf7_validation_priority(), 3 );
-		//$this->loader->add_action( 'wpcf7_validate_acceptance*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
-		$this->loader->add_action( 'wpcf7_validate_quiz', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+		$cur_ver = '';
+		//get contact form 7 version
+		$cur_ver = get_option( 'wpcf7' );
+		if(!empty($cur_ver)){
+			$cur_ver = $cur_ver['version'];
+		}
+		
+		//if support Rest API then swv validation method
+		if ($cur_ver != '' && version_compare($cur_ver, '5.6') >= 0) {
+			//text rule
+			remove_action( 'wpcf7_swv_create_schema', 'wpcf7_swv_add_text_rules' );
+			$this->loader->add_action( 'wpcf7_swv_create_schema', $plugin_public, 'wpcf7_swv_add_text_rules_digitaldyna', $this->get_cf7_validation_priority(), 2 );
+			
+			//textarea rule
+			remove_action( 'wpcf7_swv_create_schema', 'wpcf7_swv_add_textarea_rules' );
+			$this->loader->add_action( 'wpcf7_swv_create_schema', $plugin_public, 'wpcf7_swv_add_textarea_rules_digitaldyna', $this->get_cf7_validation_priority(), 2 );
+			
+			//radio and checkbox rule
+			remove_action( 'wpcf7_swv_create_schema', 'wpcf7_swv_add_checkbox_rules' );
+			$this->loader->add_action( 'wpcf7_swv_create_schema', $plugin_public, 'wpcf7_swv_add_checkbox_rules_digitaldyna', $this->get_cf7_validation_priority(), 2 );
+			
+			//date rule
+			remove_action( 'wpcf7_swv_create_schema', 'wpcf7_swv_add_date_rules' );
+			$this->loader->add_action( 'wpcf7_swv_create_schema', $plugin_public, 'wpcf7_swv_add_date_rules_digitaldyna', $this->get_cf7_validation_priority(), 2 );
+
+			//select rule
+			remove_action( 'wpcf7_swv_create_schema', 'wpcf7_swv_add_select_rules' );
+			$this->loader->add_action( 'wpcf7_swv_create_schema', $plugin_public, 'wpcf7_swv_add_select_rules_digitaldyna', $this->get_cf7_validation_priority(), 2 );
+
+		} else {
+
+			//old version validation methods
+			$this->loader->add_action( 'wpcf7_validate_text*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_email*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_textarea*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_tel*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_url*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_checkbox*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_number*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			//$this->loader->add_action( 'wpcf7_validate_range*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_date*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_select*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_radio', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_file*', $plugin_public, 'cf7cv_custom_form_validation_file', $this->get_cf7_validation_priority(), 3 );
+			//$this->loader->add_action( 'wpcf7_validate_acceptance*', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+			$this->loader->add_action( 'wpcf7_validate_quiz', $plugin_public, 'cf7cv_custom_form_validation', $this->get_cf7_validation_priority(), 2 );
+		}
 
 	}
 

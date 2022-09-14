@@ -29,8 +29,8 @@ class CF7_CVM_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate($network_wide) {
-		if ( is_multisite() && $network_wide ) {
+	public static function activate() {
+		if ( is_multisite() ) {
 			if ( !is_plugin_active_for_network('contact-form-7/wp-contact-form-7.php') ){
 				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 				deactivate_plugins( CF7_CVM_BASE_URL );

@@ -3,8 +3,8 @@ Contributors: mohan9a
 Donate link: http://digitaldyna.com
 Tags: cf7 custom validation message, contact form 7, contact form 7 validation, cf7 validation, Contact form 7 validation, custom validation, form validation, validation, custom validation message for cf7
 Requires at least: 3.0.1
-Tested up to: 5.7
-Stable tag: 1.3.1
+Tested up to: 6.0.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,12 @@ You can recognize field by field name. Suppose your field name is your-name then
 2. When user submit form, custom validation message will be displayed below is field.
 
 == Changelog ==
+
+= 2.0.0 =
+* Fixed validation. Added Rest API compatiblity as it's changed by Contact Form 7.
+* Used object notation to access the ID from contact form 7 object at admin side.
+* While activating plugin, showing 304 error for multisite. It's fixed.
+* Compatiblity check with WordPress 6.0.2.
 
 = 1.3.1 =
 * Added custom validation message support for file upload field.
